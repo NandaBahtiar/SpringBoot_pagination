@@ -23,23 +23,22 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id,asc") String[] sort,
-            @RequestParam(defaultValue = "") String category
+            @RequestParam() String category,
+            @RequestParam(defaultValue = "0.0") double price
     ){
         Sort.Direction direction = Sort.Direction.fromString(sort[1]);
         String sortField= sort[0];
         Sort sortBy = Sort.by(direction,sortField);
         Pageable pageable = PageRequest.of(page,size,sortBy);
 
-        if (category.isEmpty()){
-            Page<Product> productsPage = productService.getAllProduct(pageable);
+
+            Page<Product> productsPage = productService.getAllProduct(category,price,pageable);
             return ResponseEntity.ok(productsPage);
-        }else{
-            Page<Product> productsPage = productService.findByCategory(pageable, category);
-            return ResponseEntity.ok(productsPage);
-        }
+
     }
     @PostMapping
-    public ResponseEntity<Product> saveProduct(@RequestBody Product product){
+    public ResponseEntity<Product> saveProduct(@RequestBody Product product
+    ){
         return ResponseEntity.ok(productService.saveProduct(product));
 
     }
