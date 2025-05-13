@@ -1,8 +1,5 @@
 # Java SpringBoot Pagination
-
-
- lorem
- SpringBoot version 3.4.5   
+Dokumentasi ini menjelaskan cara mengimplementasikan fitur pagination (paginasi data) pada REST API menggunakan Spring Boot versi 3.4.5. Pagination berguna untuk membatasi jumlah data yang ditampilkan per permintaan (request), sehingga performa aplikasi tetap optimal saat menangani dataset besar. Contoh implementasi ini menggunakan database PostgreSQL dan disertai fitur tambahan filter berdasarkan kategori.
 ### Dependency
 - Spring Web (untuk membuat REST API)
 - Spring Data JPA (untuk interaksi database)
@@ -121,5 +118,40 @@ public class ProductController {
     }
 }
 ```
+## menambahkan spesifikasi pagination berdasarkan category
+* tambahkan di repository
+```bash
+       Page<Product> findByCategory(String category, Pageable pageable);
+```
+* tambahkan di service
+```bash
+  @Override
+    public Page<Product> findByCategory(Pageable pageable, String category) {
+        return productRepository.findByCategory(category,pageable);
+    }
+```
+* edit di nagian controller
+```bash
+ @GetMapping
+    public ResponseEntity<Page<Product>> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String[] sort,
+            @RequestParam(defaultValue = "") String category
+    ){
+        Sort.Direction direction = Sort.Direction.fromString(sort[1]);
+        String sortField= sort[0];
+        Sort sortBy = Sort.by(direction,sortField);
+        Pageable pageable = PageRequest.of(page,size,sortBy);
+
+        if (category.isEmpty()){
+            Page<Product> productsPage = productService.getAllProduct(pageable);
+            return ResponseEntity.ok(productsPage);
+        }else{
+            Page<Product> productsPage = productService.findByCategory(pageable, category);
+            return ResponseEntity.ok(productsPage);
+        }
+    }
+```
 ## Postman
-[link](shttps://readme.so/id/editorada)
+[link](https://github.com/NandaBahtiar/SpringBoot_pagination/blob/master/pagination.postman_collection.json)
