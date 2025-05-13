@@ -1,8 +1,5 @@
 # Java SpringBoot Pagination
-
-
- lorem
- SpringBoot version 3.4.5   
+Dokumentasi ini menjelaskan cara mengimplementasikan fitur pagination (paginasi data) pada REST API menggunakan Spring Boot versi 3.4.5. Pagination berguna untuk membatasi jumlah data yang ditampilkan per permintaan (request), sehingga performa aplikasi tetap optimal saat menangani dataset besar. Contoh implementasi ini menggunakan database PostgreSQL dan disertai fitur tambahan filter berdasarkan kategori.
 ### Dependency
 - Spring Web (untuk membuat REST API)
 - Spring Data JPA (untuk interaksi database)
