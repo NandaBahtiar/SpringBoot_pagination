@@ -122,4 +122,4 @@ public class ProductController {
 }
 ```
 ## Postman
-[link](shttps://readme.so/id/editorada)
+[link](https://github.com/NandaBahtiar/SpringBoot_pagination/blob/master/pagination.postman_collection.json)
