@@ -22,16 +22,21 @@ public class ProductController {
     public ResponseEntity<Page<Product>> getAllProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id,asc") String[] sort
+            @RequestParam(defaultValue = "id,asc") String[] sort,
+            @RequestParam(defaultValue = "") String category
     ){
         Sort.Direction direction = Sort.Direction.fromString(sort[1]);
         String sortField= sort[0];
         Sort sortBy = Sort.by(direction,sortField);
-
         Pageable pageable = PageRequest.of(page,size,sortBy);
 
-        Page<Product> productsPage = productService.getAllProduct(pageable);
-        return ResponseEntity.ok(productsPage);
+        if (category.isEmpty()){
+            Page<Product> productsPage = productService.getAllProduct(pageable);
+            return ResponseEntity.ok(productsPage);
+        }else{
+            Page<Product> productsPage = productService.findByCategory(pageable, category);
+            return ResponseEntity.ok(productsPage);
+        }
     }
     @PostMapping
     public ResponseEntity<Product> saveProduct(@RequestBody Product product){

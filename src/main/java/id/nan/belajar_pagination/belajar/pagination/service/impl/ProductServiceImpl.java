@@ -22,6 +22,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> findByCategory(Pageable pageable, String category) {
+        return productRepository.findByCategory(category,pageable);
+    }
+
+    @Override
     public Product saveProduct(Product product) {
         List<Product> productList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
